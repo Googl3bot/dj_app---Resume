@@ -1,0 +1,40 @@
+<div class="container">
+    <div class="header">
+      <h1>Cosmedix Reporting</h1>
+      <span>v1</span>
+    </div>
+  
+    <div class="dashboard">
+      <div class="sections">
+  
+        <div class="group">
+  
+          <div class="content" *ngFor="let action of actions">
+            <div class="element" *ngIf="action.title">
+              <span class="title">{{action.title}}</span>
+              <p class="description" *ngIf="action.description">{{action.description}}</p>
+            </div>
+            <div class="element" *ngIf="action.inputs">
+              <form (submit)="run(action.submit)">
+                <div class="inputContainer" *ngFor="let input of action.inputs">
+                  <input *ngIf="input.type !== 'file'" [name]="input.name" [placeholder]="input.placeholder"
+                    [type]="input.type" [attr.required]="input.required" [(ngModel)]="input.value">
+                  <!-- <input *ngIf="input.type == 'file'" [name]="input.name" [placeholder]="input.placeholder"
+                    [type]="input.type" [attr.required]="input.required" [(ngModel)]="input.value"
+                    (change)="uploadPublicFile($event, action)"> -->
+                </div>
+                <button *ngFor="let button of action.buttons" [type]="button['submit']">
+                  <i *ngIf="!button.active" class="material-icons">{{button.icon}}</i>
+                  <img *ngIf="button.active" [src]="button.spinner" alt="">
+                </button>
+              </form>
+            </div>
+          </div>
+  
+        </div>
+  
+  
+      </div>
+    </div>
+  </div>
+  

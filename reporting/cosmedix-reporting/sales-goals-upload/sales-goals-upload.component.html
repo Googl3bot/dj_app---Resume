@@ -1,0 +1,113 @@
+<div class="spinner-center" *ngIf="!repLoaded">
+    <img [src]="spinner" alt=" ">
+</div>
+
+
+<div *ngIf="repLoaded">
+    <div class="header">
+        <div class="reportTitle">
+            <span>
+                Cosmedix B2B AE Sales Goals
+            </span>
+            <app-report-info [reportInfo]="info"></app-report-info>
+            <button mat-button matSuffix mat-icon-button aria-label="Download" (click)="downloadExcel()" title="Download as Excel">
+                <mat-icon>cloud_download</mat-icon>
+            </button>
+
+        </div>
+        <div>
+            <button (click)="toggleNewSalesGoalOpen()" class="createBudget">New Sales Goal</button>
+        </div>
+    </div>
+
+    <div class="budgetTableWrapper">
+        <!-- new sales goal entry -->
+        <div *ngIf="createNewBudgetToggled" class="newBudgetEntryArea">
+            <select name="selectedTerritory" [(ngModel)]="selectedTerritoryId">
+                <option value="undefined" disabled selected>Territory</option>
+                <option *ngFor="let t of territoryMapping" [ngValue]="t.TERRITORY_ID">{{t.TERRITORY_ID}} - {{t.TERRITORY}} - {{t.SALES_REP}}</option>
+            </select>
+            <input type="text" placeholder="Accounting Month" [(ngModel)]="newAccMonth">
+            <input type="text" placeholder="Accounting Year" [(ngModel)]="newAccYear">
+            <input type="text" placeholder="Sales Goal" [(ngModel)]="newSalesGoal">
+            <button class="createBudget" (click)="uploadNewSalesGoal()" *ngIf="!creatingNewBudget">Upload New Sales Goal</button>
+            <img [src]="spinner" alt=" " *ngIf="creatingNewBudget">
+
+            <button mat-button matSuffix mat-icon-button aria-label="close" (click)="toggleNewSalesGoalClose()">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+
+        <!-- TOP SEARCH BAR -->
+        <mat-form-field class="searchBar">
+            <input matInput type="text" (keyup)="globalFilter($event.target.value)" placeholder="Search" [(ngModel)]="searchInput">
+            <mat-icon matSuffix aria-label="Search">search</mat-icon>
+        </mat-form-field>
+
+        <mat-table [dataSource]="tableSrc" matSort class="budgetTable">
+            <ng-container matColumnDef="Entry ID" style="display: none;">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Entry ID</th>
+                <td mat-cell *matCellDef="let element"> {{element['entryId']}} </td>
+            </ng-container>
+            <ng-container matColumnDef="Territory ID">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Territory ID</th>
+                <td mat-cell *matCellDef="let element"> {{element['territory_id']}} </td>
+            </ng-container>
+            <ng-container matColumnDef="Territory">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Territory ID</th>
+                <td mat-cell *matCellDef="let element"> {{element['territory']}} </td>
+            </ng-container>
+            <ng-container matColumnDef="Accounting Month">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Accounting Month </th>
+                <td mat-cell *matCellDef="let element"> {{element['acc_month']}} </td>
+            </ng-container>
+            <ng-container matColumnDef="Accounting Year">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Accounting Year</th>
+                <td mat-cell *matCellDef="let element"> {{element['acc_year']}} </td>
+            </ng-container>
+            <ng-container matColumnDef="Sales Rep">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Sales Rep</th>
+                <td mat-cell *matCellDef="let element"> {{element['sales_rep']}} </td>
+            </ng-container>
+            <ng-container matColumnDef="Goal">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Goal</th>
+                <td mat-cell *matCellDef="let element; index as indexOfelement;">
+                    <span *ngIf="!isToggled(indexOfelement) && !uploadingToggles[indexOfelement]">
+                        <button (click)="toggleOpen(indexOfelement)">
+                            {{ element['goal'] }}
+                        </button>
+                    </span>
+                    <!-- Update budget -->
+                    <span *ngIf="isToggled(indexOfelement) && !uploadingToggles[indexOfelement]" class="editWindow">
+                        <input class="budgetUpdateInput" placeholder="{{ element['goal'] }}" [(ngModel)]="element['goal']">
+                        <button mat-button matSuffix mat-icon-button aria-label="check"
+                            (click)="updateBudget(element['territoryId'],element['acc_month'], element['acc_year'], 
+                            element['goal'] , indexOfelement);toggleClose(indexOfelement)">
+                            <mat-icon>check</mat-icon>
+                        </button>
+
+                        <button mat-button matSuffix mat-icon-button aria-label="close"
+                            (click)="toggleClose(indexOfelement)">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </span>
+                    <span>
+                        <button *ngIf="!deletingToggles[indexOfelement]"
+                        matbutton matSuffix mat-icon-button aria-label="delete"
+                        (click)="deleteBudget(element['entryId'], indexOfelement)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                    </span>
+                    <!-- Delete budget -->
+                    <img [src]="spinner" alt=" " *ngIf="uploadingToggles[indexOfelement]">
+                    <img [src]="spinner" alt=" " *ngIf="deletingToggles[indexOfelement]">
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="tableHeaders"></tr>
+            <tr mat-row *matRowDef="let row; columns: tableHeaders;"></tr>
+        </mat-table>
+    </div>
+    <mat-paginator class="mat-paginator-sticky" [pageSizeOptions]="[10, 50, 100, 500]" showFirstLastButtons>
+    </mat-paginator>
+</div>

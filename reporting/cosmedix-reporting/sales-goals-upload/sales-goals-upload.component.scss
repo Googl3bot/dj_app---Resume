@@ -1,0 +1,139 @@
+@import 'src/styles';
+:host {
+    width: 100%;
+}
+
+.spinner-center {
+    /* position: absolute; */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+}
+
+.header {
+    @include display_flex;
+    align-items: center;
+    justify-content: space-between;
+    .reportTitle {
+        text-align: center;
+        flex: 1;
+        margin: initial;
+        padding: 1.5em;
+    }
+}
+
+.budgetTableWrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.budgetTable {
+    width: 100%;
+}
+
+tr {
+    display: flex;
+    width: 100%;
+}
+
+td {
+    display: flex;
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    align-content: center;
+}
+
+th {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+button {
+    margin: 0.25em;
+    // background: white;
+    background-color: transparent;
+    border: white;
+    outline: none
+}
+
+button:hover {
+    background-color: lightskyblue;
+}
+
+select {
+    margin: 0.5em;
+}
+
+.newBudgetEntryArea {
+    width: 100%;
+    max-height: 4em;
+    display: flex;
+    padding-left: 5em;
+    padding-right: 5em;
+    input {
+        margin-left: 1em;
+        margin-right: 1em;
+    }
+}
+
+.createBudget {
+    background-color: #8fc9f0;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 8.5px;
+    min-height: 2.5em;
+    button:hover {
+        background-color: lightskyblue;
+    }
+}
+
+.editWindow {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+
+tr:nth-child(even) {
+    font-family: Verdana, Helvetica, sans-serif;
+    background: #2faddf1c;
+}
+
+tr:nth-child(odd) {
+    font-family: Verdana, Helvetica, sans-serif;
+    background: rgba(255, 255, 255, 0.87);
+}
+
+.searchBar {
+    flex: 1;
+    width: 100%;
+    padding: 0 2em;
+}
+
+.budgetBatchUploadDiv {
+    padding: 2em;
+    border: #2faddf1c;
+    border-style: outset;
+    label {
+        padding-right: 1em;
+    }
+    margin-left: 1.5em;
+}
+
+.budgetUpdateInput {
+    border: 1em black;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+}
+
+// .mat-button {
+//     width: .15em!important;
+//     // margin-right: .15em!important;
+// }
